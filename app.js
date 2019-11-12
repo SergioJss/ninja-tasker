@@ -1,23 +1,32 @@
 //packages
 
 const express = require("express");
+const bodyParser = require("body-parser");
 
 //starting express app
 
 const app = express();
 
-//View engine
+//Middleware
 
 app.use(express.static("./public"));
+app.use(bodyParser.urlencoded({ extended: false }));
 
-//setting engine
-
+//View Engine
 app.set("view engine", "ejs");
+
+let list = ["Code and Watch Anime", "Slackline tonight"];
 
 //GET
 
 app.get("/home", function(req, res) {
-  res.render("home.ejs");
+  res.render("Home.ejs", { list: list });
+});
+
+app.post("/home", function(req, res) {
+  console.log(req.body.taskItem);
+  list.push(req.body.taskItem);
+  res.render("Home.ejs", { list: list });
 });
 
 //Listen for request

@@ -1,0 +1,24 @@
+{
+  "name": "ninja-tasker",
+  "version": "1.0.0",
+  "description": "A To do list app for ninjas",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SergioJss/ninja-tasker.git"
+  },
+  "author": "Sergio Silva Salas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SergioJss/ninja-tasker/issues"
+  },
+  "homepage": "https://github.com/SergioJss/ninja-tasker#readme",
+  "devDependencies": {
+    "nodemon": "^1.19.4",
+    "prettier": "^1.19.1"
+  }
+}

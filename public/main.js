@@ -4,7 +4,7 @@ listItem.addEventListener("click", function(event) {
   console.log(event.target);
   fetch("/delete/" + event.target.id, { method: "delete" })
     .then(function(res) {
-      res.json(window.location.reload());
+      res.json();
     })
     .then(function() {
       window.location.href = "/home";

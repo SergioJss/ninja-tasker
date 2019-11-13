@@ -11,6 +11,7 @@ const app = express();
 
 app.use(express.static("./public"));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 //View Engine
 app.set("view engine", "ejs");
@@ -29,7 +30,13 @@ app.post("/home", function(req, res) {
   res.render("Home.ejs", { list: list });
 });
 
-//Listen for request
+app.delete("/delete/:index", function(req, res) {
+  console.log(req.params.index);
+  list.splice(req.params.index, 1);
+  res.json(list);
+});
+
+//Listen9 for request
 app.listen(3000, function() {
   console.log("server is live on port: 3000");
 });

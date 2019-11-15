@@ -2,6 +2,7 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
+const db = require("./models");
 
 //starting express app
 
@@ -36,7 +37,11 @@ app.delete("/delete/:index", function(req, res) {
   res.json(list);
 });
 
-//Listen9 for request
-app.listen(3000, function() {
-  console.log("server is live on port: 3000");
+db.sequelize.sync().then(function() {
+  app.listen(3000, function(err) {
+    if (err) console.log(err);
+    console.log("server is live on port: 3000");
+  });
 });
+
+//Listen9 for request

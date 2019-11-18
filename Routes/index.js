@@ -1,24 +1,35 @@
 const express = require("express");
+const db = require("../models");
 const routes = express.Router();
-
-let list = ["Code and Watch Anime", "Slackline tonight"];
 
 //GET
 
-app.get("/home", function(req, res) {
-  res.render("Home.ejs", { list: list });
+routes.get("/home", function(req, res) {
+  db.Tasks.findAll({
+    attributes: ["id", "todo"]
+  }).then(function(results) {
+    console.log(results);
+    res.render("Home.ejs", { list: results });
+  });
 });
 
-app.post("/home", function(req, res) {
+routes.post("/home", function(req, res) {
   console.log(req.body.taskItem);
-  list.push(req.body.taskItem);
-  res.render("Home.ejs", { list: list });
+  db.Tasks.create({
+    todo: req.body.taskItem
+  }).then(function(results) {
+    console.log(results);
+    res.redirect("/home");
+  });
 });
 
-app.delete("/delete/:index", function(req, res) {
+routes.delete("/delete/:index", function(req, res) {
   console.log(req.params.index);
-  list.splice(req.params.index, 1);
-  res.json(list);
+  db.Tasks.destroy({ where: { id: req.params.index } }).then(function(results) {
+    console.log(results);
+    res.redirect("/home");
+  });
+  res.json(db);
 });
 
 module.exports = routes;

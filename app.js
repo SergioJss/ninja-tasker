@@ -4,6 +4,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const db = require("./models");
 const routes = require("./Routes");
+const passport = require("./config/passport");
+const session = require("express-session");
 
 //starting express app
 
@@ -14,6 +16,11 @@ const app = express();
 app.use(express.static("./public"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(
+  session({ secret: "Cohort Orlando", resave: true, saveUninitialized: true })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 //View Engine
 app.use(routes);

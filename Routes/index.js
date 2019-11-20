@@ -2,29 +2,32 @@ const express = require("express");
 const db = require("../models");
 const routes = express.Router();
 const passport = require("../config/passport");
+const authenticate = require("../config/middleware/isAuthenticated");
 
 //GET
 
-routes.get("/home", function(req, res) {
+routes.get("/home", authenticate, function(req, res) {
+  console.log(req.user);
   db.Tasks.findAll({
-    attributes: ["id", "todo"]
+    where: { userID: req.user.id }
   }).then(function(results) {
     console.log(results);
-    res.render("Home.ejs", { list: results });
+    res.render("Home.ejs", { list: results, user: req.user });
   });
 });
 
-routes.post("/home", function(req, res) {
-  console.log(req.body.taskItem);
+routes.post("/ninja", authenticate, function(req, res) {
+  // console.log(req.body.taskItem);
   db.Tasks.create({
-    todo: req.body.taskItem
+    todo: req.body.taskItem,
+    userID: req.user.id
   }).then(function(results) {
-    console.log(results);
+    // console.log(results);
     res.redirect("/home");
   });
 });
 
-routes.delete("/delete/:index", function(req, res) {
+routes.delete("/delete/:index", authenticate, function(req, res) {
   console.log(req.params.index);
   db.Tasks.destroy({ where: { id: req.params.index } }).then(function(results) {
     console.log(results);
@@ -60,5 +63,17 @@ routes.post(
     failureRedirect: "/user/signup"
   })
 );
+
+//GET Profile
+routes.get("/profile", authenticate, function(req, res) {
+  res.render("profile. ejs", { user: req.user });
+});
+
+//GET logout
+
+routes.get("/logout", function(req, res) {
+  req.logout();
+  res.redirect("/home");
+});
 
 module.exports = routes;
